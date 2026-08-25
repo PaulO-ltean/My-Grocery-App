@@ -9,7 +9,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyAklImVDm3dlrW37ysjmH5y09LswMs2IyU",
     authDomain: "my-grocery-list-ff956.firebaseapp.com",
    
-    databaseURL: "https://console.firebase.google.com/project/my-grocery-list-ff956/database/my-grocery-list-ff956-default-rtdb/data/~2F", 
+    databaseURL: "https://my-grocery-list-ff956-default-rtdb.europe-west1.firebasedatabase.app", 
     projectId: "my-grocery-list-ff956",
     storageBucket: "my-grocery-list-ff956.firebasestorage.app",
     messagingSenderId: "365556603641",
@@ -20,7 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const groceriesRef = ref(db, 'groceries'); 
-
+const templatesRef = ref(db, 'templates'); 
 
 const inputFld = document.getElementById("input-grc");
 const inputBtn = document.getElementById("input-btn");
@@ -59,13 +59,14 @@ inputBtn.addEventListener('click', async () => {
     let inputValue = inputFld.value.trim();
     if (inputValue) {
         try {
-            await adaugaSauActualizeazaProdus(inputValue);
+            
+            await push(templatesRef, { name: inputValue });
             inputFld.value = ""; 
         } catch (eroare) {
-            console.error("Eroare la adăugarea produsului: ", eroare);
+            console.error("Eroare la adăugarea șablonului: ", eroare);
         }
     }
-});
+})
 
 btnContainer.addEventListener('click', async (eveniment) => {
     if (eveniment.target.classList.contains('grocery')) {
@@ -73,46 +74,78 @@ btnContainer.addEventListener('click', async (eveniment) => {
         try {
             await adaugaSauActualizeazaProdus(itemName);
         } catch (eroare) {
-            console.error("Eroare la adăugarea din butoanele rapide: ", eroare);
+            console.error("Eroare la mutarea în listă: ", eroare);
         }
-    } else if (eveniment.target.classList.contains('delete-btn')) {
-        const wrapper = eveniment.target.closest('.grocery-wrapper');
-        if (wrapper) wrapper.remove();
+    } 
+    else if (eveniment.target.classList.contains('delete-btn')) {
+        const idNod = eveniment.target.getAttribute('data-id');
+        if (idNod) {
+            const templateRef = ref(db, `templates/${idNod}`);
+            try {
+                await remove(templateRef);
+            } catch (eroare) {
+                console.error("Eroare la ștergerea șablonului: ", eroare);
+            }
+        }
     }
-});
+})
 
-
-onValue(groceriesRef, (snapshot) => {
-    let produse = [];
+onValue(templatesRef, (snapshot) => {
+    btnContainer.innerHTML = ""
     
-   
     snapshot.forEach((childSnapshot) => {
-        produse.push({ 
-            id: childSnapshot.key, 
-            ...childSnapshot.val() 
-        });
+        const sablon = childSnapshot.val()
+        const idSablon = childSnapshot.key
+        btnContainer.innerHTML += `
+            <span class="grocery-wrapper">
+                <button class="grocery">${sablon.name}</button>
+                <button class="delete-btn" data-id="${idSablon}">X</button>
+            </span>
+        `
+    })
+    
+})
+onValue(groceriesRef, function(snapshot) {
+   
+    let listaProduse = [];
+    snapshot.forEach(function(element) {
+        let produs = element.val();
+        produs.id = element.key; 
+        listaProduse.push(produs);
     });
-    produse.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
 
    
-    ulList.innerHTML = "";
-    produse.forEach((produs) => {
-        const clasaBifat = produs.isChecked ? "checked-item" : "";
-        const sufixCantitate = produs.count > 1 ? ` x${produs.count}` : "";
-        
+    listaProduse.sort(function(a, b) {
+        return a.createdAt - b.createdAt;
+    });
+
+   
+    ulList.innerHTML = ""; 
+    
+    for (let i = 0; i < listaProduse.length; i++) {
+        let produs = listaProduse[i];
+    
+        let clasaCss = "";
+        if (produs.isChecked === true) {
+            clasaCss = "checked-item";
+        }
+        let textCantitate = "";
+        if (produs.count > 1) {
+            textCantitate = " x" + produs.count
+        }
+
         ulList.innerHTML += `
             <li>
                 <span class="grocery-wrapper">
-                    <button class="list-item ${clasaBifat}" data-id="${produs.id}">
-                        ${produs.name}${sufixCantitate}
+                    <button class="list-item ${clasaCss}" data-id="${produs.id}">
+                        ${produs.name}${textCantitate}
                     </button>
                     <button class="delete-btn" data-id="${produs.id}">X</button>
                 </span>
             </li>
-        `;
-    });
-});
-
+        `
+    }
+})
 
 groceryList.addEventListener('click', async (eveniment) => {
     if (eveniment.target.classList.contains('delete-btn')) {
@@ -140,4 +173,4 @@ groceryList.addEventListener('click', async (eveniment) => {
             }
         }
     }
-});
+})

@@ -15,7 +15,7 @@ body{
     margin: 5px;
     width: 60%; 
     max-width: 500px;
-    
+    box-shadow: 0 4px 6px rgba(83, 47, 25, 0.2);
 }
 input{
     flex-grow: 1;
@@ -41,17 +41,20 @@ input{
     display: inline-flex;
     align-items: stretch;
     margin: 5px;
+   
 }
 .grocery {
     
     border: none;
-    width: 100px;
+    width: auto;
     background-color: #B1A297;
     color: #532F19;
     font-weight: bold;
     padding: 5px;
     margin: 0; 
     border-radius: 15px 0 0 15px;
+     box-shadow: 0 3px 5px rgba(83, 47, 25, 0.15);
+    
 }
 
 .delete-btn {
@@ -63,6 +66,8 @@ input{
     font-weight: bold;
     cursor: pointer;
     margin: 0;
+     box-shadow: 0 3px 5px rgba(83, 47, 25, 0.15);
+     
 }
 #grc-txt {
     margin-left: 30px;
@@ -79,6 +84,7 @@ input{
     background-color: white;
     color: black;
     cursor: pointer;
+     box-shadow: 0 3px 5px rgba(83, 47, 25, 0.15);
 }
 
 li {
