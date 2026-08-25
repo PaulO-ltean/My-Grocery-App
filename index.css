@@ -29,10 +29,11 @@ body{
     margin: 10px 0;  
 }
 #start{
-    display: inline-flex;   
+    display: flex; 
+    justify-content: center; 
     align-items: stretch;
-    margin: 5px;
-    width: 60%; 
+    margin: 10px auto; 
+    width: 80%; 
     max-width: 500px;
     box-shadow: 0 4px 6px rgba(83, 47, 25, 0.2);
     border-radius: 20px; 
