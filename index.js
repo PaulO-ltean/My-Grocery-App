@@ -29,6 +29,12 @@ const groceryList = document.getElementById('grocery-list');
 const ulList = document.querySelector('#grocery-list ul'); 
 
 
+function standardizeazaNume(text) {
+    if (!text) return "";
+    text = text.trim();
+    
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
 async function adaugaSauActualizeazaProdus(numeProdus) {
   
     const q = query(groceriesRef, orderByChild('name'), equalTo(numeProdus));
@@ -56,17 +62,32 @@ async function adaugaSauActualizeazaProdus(numeProdus) {
 
 
 inputBtn.addEventListener('click', async () => {   
-    let inputValue = inputFld.value.trim();
-    if (inputValue) {
-        try {
-            
-            await push(templatesRef, { name: inputValue });
-            inputFld.value = ""; 
-        } catch (eroare) {
-            console.error("Eroare la adăugarea șablonului: ", eroare);
-        }
+    let textIntrodus = standardizeazaNume(inputFld.value);
+    
+    if (textIntrodus !== "") {
+        await push(templatesRef, { name: textIntrodus });
+        inputFld.value = ""; 
     }
 })
+
+onValue(templatesRef, function(snapshot) {
+    let htmlBuffer = ""; 
+    
+    snapshot.forEach(function(element) {
+        let sablon = element.val();
+        let idUnic = element.key;
+        
+        htmlBuffer += `
+            <span class="grocery-wrapper">
+                <button class="grocery">${sablon.name}</button>
+                <button class="delete-btn" data-id="${idUnic}">X</button>
+            </span>
+        `;
+    });
+    
+    
+    btnContainer.innerHTML = htmlBuffer; 
+});
 
 btnContainer.addEventListener('click', async (eveniment) => {
     if (eveniment.target.classList.contains('grocery')) {
@@ -90,21 +111,7 @@ btnContainer.addEventListener('click', async (eveniment) => {
     }
 })
 
-onValue(templatesRef, (snapshot) => {
-    btnContainer.innerHTML = ""
-    
-    snapshot.forEach((childSnapshot) => {
-        const sablon = childSnapshot.val()
-        const idSablon = childSnapshot.key
-        btnContainer.innerHTML += `
-            <span class="grocery-wrapper">
-                <button class="grocery">${sablon.name}</button>
-                <button class="delete-btn" data-id="${idSablon}">X</button>
-            </span>
-        `
-    })
-    
-})
+
 onValue(groceriesRef, function(snapshot) {
    
     let listaProduse = [];
@@ -120,21 +127,15 @@ onValue(groceriesRef, function(snapshot) {
     });
 
    
-    ulList.innerHTML = ""; 
+    let htmlBuffer = ""; 
     
     for (let i = 0; i < listaProduse.length; i++) {
         let produs = listaProduse[i];
-    
-        let clasaCss = "";
-        if (produs.isChecked === true) {
-            clasaCss = "checked-item";
-        }
-        let textCantitate = "";
-        if (produs.count > 1) {
-            textCantitate = " x" + produs.count
-        }
+        let clasaCss = produs.isChecked ? "checked-item" : "";
+        let textCantitate = produs.count > 1 ? " x" + produs.count : "";
 
-        ulList.innerHTML += `
+       
+        htmlBuffer += `
             <li>
                 <span class="grocery-wrapper">
                     <button class="list-item ${clasaCss}" data-id="${produs.id}">
@@ -143,34 +144,30 @@ onValue(groceriesRef, function(snapshot) {
                     <button class="delete-btn" data-id="${produs.id}">X</button>
                 </span>
             </li>
-        `
+        `;
     }
+    
+   
+    ulList.innerHTML = htmlBuffer;
 })
 
-groceryList.addEventListener('click', async (eveniment) => {
-    if (eveniment.target.classList.contains('delete-btn')) {
-        const idNod = eveniment.target.getAttribute('data-id');
-        if (idNod) {
-           
-            const itemRef = ref(db, `groceries/${idNod}`);
-            try {
-                await remove(itemRef); 
-            } catch (eroare) {
-                console.error("Eroare la ștergere: ", eroare);
-            }
-        }
+groceryList.addEventListener('click', async function(eveniment) {
+    let elementApasat = eveniment.target;
+    
+    if (elementApasat.classList.contains('delete-btn')) {
+        let idNod = elementApasat.getAttribute('data-id');
+        let referintaDeSters = ref(db, 'groceries/' + idNod);
+        await remove(referintaDeSters);
     } 
-    else if (eveniment.target.classList.contains('list-item')) {
-        const idNod = eveniment.target.getAttribute('data-id');
-        if (idNod) {
-            const itemRef = ref(db, `groceries/${idNod}`);
-            const esteBifat = eveniment.target.classList.contains('checked-item');
-            
-            try {
-                await update(itemRef, { isChecked: !esteBifat });
-            } catch (eroare) {
-                console.error("Eroare la bifare: ", eroare);
-            }
+    else if (elementApasat.classList.contains('list-item')) {
+        let idNod = elementApasat.getAttribute('data-id');
+        let referintaDeActualizat = ref(db, 'groceries/' + idNod);
+        let esteDejaBifat = elementApasat.classList.contains('checked-item');
+        
+        if (esteDejaBifat === true) {
+            await update(referintaDeActualizat, { isChecked: false });
+        } else {
+            await update(referintaDeActualizat, { isChecked: true });
         }
     }
-})
+});
