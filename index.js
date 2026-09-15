@@ -6,14 +6,13 @@ import {
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAklImVDm3dlrW37ysjmH5y09LswMs2IyU",
-    authDomain: "my-grocery-list-ff956.firebaseapp.com",
-   
-    databaseURL: "https://my-grocery-list-ff956-default-rtdb.europe-west1.firebasedatabase.app", 
-    projectId: "my-grocery-list-ff956",
-    storageBucket: "my-grocery-list-ff956.firebasestorage.app",
-    messagingSenderId: "365556603641",
-    appId: "1:365556603641:web:ad3f1a3bb8a903adbfa028"
+    apiKey: import.meta.env.FIREBASE_API_KEY,
+    authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: import.meta.env.FIREBASE_DATABASE_URL,
+    projectId: import.meta.env.FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.FIREBASE_APP_ID
 };
 
 

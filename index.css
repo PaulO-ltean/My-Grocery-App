@@ -108,7 +108,7 @@ input{
     background-color: white;
     color: black;
     cursor: pointer;
-     box-shadow: 0 3px 5px rgba(83, 47, 25, 0.15);
+    box-shadow: 0 3px 5px rgba(83, 47, 25, 0.15);
 }
 
 li {
