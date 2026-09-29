@@ -3,64 +3,6 @@
 }
 
 
-/* --- REGLAJE PENTRU ECRANE MICI (TELEFOANE) --- */
-@media (max-width: 600px) {
-    body {
-        max-width: 100%;
-        padding: 0 10px;
-        overflow-x: hidden;
-    }
-    
-    #start, #btn-container {
-        width: 100%;
-    }
-    
-    /* Forțăm STRICT 2 coloane pe mobil (A și B pe un rând, C și D pe următorul) */
-    #btn-container {
-       grid-template-columns: repeat(2, 1fr); 
-        gap: 15px;
-    }
-    
-    /* Grupul de litere se adaptează frumos, fără overflow: hidden */
-    .letter-group {
-        min-width: 0;
-        width: 100%;
-    }
-    .letter-separator {
-        width: 100%;
-        margin-top: 20px; 
-        margin-bottom: 10px; 
-    }
-    
-   
-    .grocery-wrapper {
-        display: flex; 
-        width: 100%;
-        margin-bottom: 8px;
-    }
-    
-
-    .grocery, .list-item {
-        flex-grow: 1; 
-        font-size: 13px;
-        padding: 8px 10px;
-        white-space: normal;
-        word-wrap: break-word;
-        text-align: left; 
-    }
-    
-   
-    .delete-btn {
-        flex-shrink: 0; 
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    #input-btn {
-        padding: 10px 12px; 
-        font-size: 13px;
-    }
-}
 
 body{
     margin: 10px auto;
@@ -185,4 +127,62 @@ li {
     text-decoration: line-through;
     background-color: #532F19;
     color: #FBF0E1;
+}
+
+@media (max-width: 600px) {
+    body {
+        max-width: 100%;
+        padding: 0 10px;
+        overflow-x: hidden;
+    }
+    
+    #start, #btn-container {
+        width: 100%;
+    }
+    
+    /* Forțăm STRICT 2 coloane pe mobil (A și B pe un rând, C și D pe următorul) */
+    #btn-container {
+       grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
+    }
+    
+    /* Grupul de litere se adaptează frumos, fără overflow: hidden */
+    .letter-group {
+        min-width: 0;
+        width: 100%;
+    }
+    .letter-separator {
+        width: 100%;
+        margin-top: 20px; 
+        margin-bottom: 10px; 
+    }
+    
+   
+    .grocery-wrapper {
+        display: flex; 
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+
+    .grocery, .list-item {
+        flex-grow: 1; 
+        font-size: 13px;
+        padding: 8px 10px;
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: left; 
+    }
+    
+   
+    .delete-btn {
+        flex-shrink: 0; 
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    #input-btn {
+        padding: 10px 12px; 
+        font-size: 13px;
+    }
 }
