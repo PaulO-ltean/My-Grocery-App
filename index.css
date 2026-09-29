@@ -3,12 +3,14 @@
 }
 
 
-/* --- REGLAJE PENTRU ECRANE MICI (TELEFOANE) --- */
 @media (max-width: 600px) {
     body {
         max-width: 100%;
-        padding: 0 10px;
-        overflow-x: hidden; /* Previne scroll-ul orizontal accidental */
+        padding: 0 10px; 
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Forțează conținutul principal să stea pe mijloc */
     }
     
     #start, #btn-container {
