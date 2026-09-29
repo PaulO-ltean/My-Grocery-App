@@ -26,8 +26,29 @@ body{
 }
 
 #btn-container{
-    margin: 10px 0;  
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    width: 90%; 
+    max-width: 900px; 
+    margin: 20px auto;
 }
+.letter-group {
+    display: block; 
+    text-align: left;
+}
+
+.letter-separator {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    color: #532F19;
+    margin: 15px 15px 5px 15px; 
+    padding-bottom: 2px;
+    border-bottom: 2px solid #B1A297; 
+}   
+
 #start{
     display: flex; 
     justify-content: center; 

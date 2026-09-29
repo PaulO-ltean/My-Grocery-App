@@ -69,13 +69,38 @@ inputBtn.addEventListener('click', async () => {
     }
 })
 
-onValue(templatesRef, function(snapshot) {
+const interogareSabloaneSortate = query(templatesRef, orderByChild('name'));
+
+onValue(interogareSabloaneSortate, function(snapshot) {
     let htmlBuffer = ""; 
+    let literaCurenta = ""; 
+    let estePrimaLitera = true; // Ne ajută să știm când să închidem cutiile anterioare
     
     snapshot.forEach(function(element) {
         let sablon = element.val();
         let idUnic = element.key;
+        let primaLitera = sablon.name.charAt(0).toUpperCase();
         
+        // Dacă am trecut la o literă nouă...
+        if (primaLitera !== literaCurenta) {
+            
+            // Dacă NU e prima literă din toată lista, înseamnă că trebuie să închidem
+            // "cutia" literei anterioare înainte de a deschide una nouă.
+            if (estePrimaLitera === false) {
+                htmlBuffer += `</div>`; // Închidem div-ul ".letter-group" anterior
+            }
+            
+            literaCurenta = primaLitera;
+            estePrimaLitera = false;
+            
+            // Deschidem o "cutie" NOUĂ pentru litera curentă și punem separatorul
+            htmlBuffer += `
+                <div class="letter-group">
+                    <div class="letter-separator">${literaCurenta}:</div>
+            `;
+        }
+        
+        // Adăugăm butoanele în "cutia" deschisă curent
         htmlBuffer += `
             <span class="grocery-wrapper">
                 <button class="grocery">${sablon.name}</button>
@@ -84,6 +109,11 @@ onValue(templatesRef, function(snapshot) {
         `;
     });
     
+    // La final de tot, după ce am terminat toate produsele, 
+    // trebuie să închidem și ultima "cutie" rămasă deschisă.
+    if (estePrimaLitera === false) {
+        htmlBuffer += `</div>`;
+    }
     
     btnContainer.innerHTML = htmlBuffer; 
 });
