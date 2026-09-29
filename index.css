@@ -3,36 +3,58 @@
 }
 
 
+/* --- REGLAJE PENTRU ECRANE MICI (TELEFOANE) --- */
 @media (max-width: 600px) {
     body {
         max-width: 100%;
-        padding: 0 15px;
-        overflow-x: hidden; 
+        padding: 0 10px;
+        overflow-x: hidden; /* Previne scroll-ul orizontal accidental */
     }
     
     #start, #btn-container {
         width: 100%;
-        margin-left: 0; 
+        margin-left: 0;
         margin-right: 0;
     }
     
+    /* Păstrăm 2 coloane, dar reducem distanța dintre ele */
     #btn-container {
-       
-        grid-template-columns: 1fr; 
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 8px; 
     }
     
-    #input-btn {
-        padding: 10px 15px; 
-        font-size: 14px;
+    /* Micșorăm pastilele produselor */
+    .grocery-wrapper {
+        margin: 2px 0;
     }
     
-    /* Permitem textului din butoane să treacă pe rândul următor dacă este prea lung */
-    .list-item, .grocery {
-        white-space: normal; 
+    /* Reducem textul și spațiul interior pentru butoanele de produse */
+    .grocery, .list-item {
+        font-size: 12px; /* Text mai mic */
+        padding: 6px 10px; /* Buton mai subțire */
+        white-space: normal; /* Permite textului lung să treacă pe rândul următor în interiorul butonului */
         word-wrap: break-word;
     }
+    
+    /* Micșorăm și butonul de ștergere X */
+    .delete-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    /* Micșorăm ușor și bara de căutare principală */
+    #input-btn {
+        padding: 10px 12px; 
+        font-size: 13px;
+    }
+
+    /* Reducem puțin spațiul ocupat de literele despărțitoare */
+    .letter-separator {
+        font-size: 14px;
+        margin: 10px 0 5px 0;
+    }
 }
+
 body{
     margin: 10px auto;
     max-width: 70%;
