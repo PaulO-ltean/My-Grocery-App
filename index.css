@@ -2,21 +2,37 @@
     box-sizing: border-box;
 }
 
+
 @media (max-width: 600px) {
     body {
-        max-width: 95%; 
+        max-width: 100%;
+        padding: 0 15px;
+        overflow-x: hidden; 
     }
     
-    #start {
-        width: 100%; 
+    #start, #btn-container {
+        width: 100%;
+        margin-left: 0; 
+        margin-right: 0;
+    }
+    
+    #btn-container {
+       
+        grid-template-columns: 1fr; 
+        gap: 15px;
     }
     
     #input-btn {
-        padding: 10px; 
+        padding: 10px 15px; 
         font-size: 14px;
     }
+    
+    /* Permitem textului din butoane să treacă pe rândul următor dacă este prea lung */
+    .list-item, .grocery {
+        white-space: normal; 
+        word-wrap: break-word;
+    }
 }
-
 body{
     margin: 10px auto;
     max-width: 70%;
