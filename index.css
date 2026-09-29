@@ -17,8 +17,8 @@
     
     /* Forțăm STRICT 2 coloane pe mobil (A și B pe un rând, C și D pe următorul) */
     #btn-container {
-        grid-template-columns: 1fr 1fr; 
-        gap: 10px;
+       grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
     }
     
     /* Grupul de litere se adaptează frumos, fără overflow: hidden */
@@ -26,12 +26,17 @@
         min-width: 0;
         width: 100%;
     }
+    .letter-separator {
+        width: 100%;
+        margin-top: 20px; 
+        margin-bottom: 10px; 
+    }
     
-    /* Transformăm wrapper-ul într-un flex container curat */
+   
     .grocery-wrapper {
         display: flex; 
         width: 100%;
-        margin: 4px 0;
+        margin-bottom: 8px;
     }
     
 
