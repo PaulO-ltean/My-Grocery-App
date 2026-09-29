@@ -12,6 +12,10 @@
         flex-direction: column;
         align-items: center; /* Forțează conținutul principal să stea pe mijloc */
     }
+    .letter-group {
+        width: 80%;
+        margin: 0;
+    }
     
     #start, #btn-container {
         width: 100%;
@@ -19,18 +23,24 @@
         margin-right: 0;
     }
     
-    /* Păstrăm 2 coloane, dar reducem distanța dintre ele */
+    
     #btn-container {
         grid-template-columns: repeat(2, 1fr); 
         gap: 8px; 
     }
     
-    /* Micșorăm pastilele produselor */
+    .letter-group {
+        min-width: 0; 
+        width: 100%;
+        overflow: hidden; 
+    }
+    
     .grocery-wrapper {
+        max-width: 100%;
         margin: 2px 0;
     }
     
-    /* Reducem textul și spațiul interior pentru butoanele de produse */
+   
     .grocery, .list-item {
         font-size: 12px; /* Text mai mic */
         padding: 6px 10px; /* Buton mai subțire */
